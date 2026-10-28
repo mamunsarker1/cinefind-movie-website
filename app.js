@@ -7,7 +7,28 @@ const grid=document.getElementById("movie-grid"), search=document.getElementById
 let movies=[], shown=10;
 const palette=[["#253b57","#725a9e"],["#174d56","#bd855f"],["#3e2c5e","#bf718b"],["#263c43","#b58b54"],["#243a6b","#9d6ab1"],["#3e3449","#d58c68"],["#183c4a","#657cc1"]];
 function safeUrl(value){try{const u=new URL(value);return ["http:","https:"].includes(u.protocol)?u.href:null}catch{return null}}
-function categoryOf(m){return String(m.category||"Other")}
+function categoryOf(m) {
+  const title = String(m.title || "").toLowerCase();
+  const original = String(m.category || "").toLowerCase();
+
+  if (/bachelor point|natok|drama|episode|bangla drama/.test(title)) {
+    return "Drama";
+  }
+
+  if (/web series|season \d|series|episode \d/.test(title)) {
+    return "Web Series";
+  }
+
+  if (/movie|film|dual audio|1080p|720p|480p|web-dl|bluray|hindi|tamil|telugu/.test(title)) {
+    return "Movie";
+  }
+
+  if (original && original !== "other") {
+    return original.charAt(0).toUpperCase() + original.slice(1);
+  }
+
+  return "Other";
+}
 function posterMarkup(m,i){const p=palette[i%palette.length];const letter=(m.title||"?").trim().charAt(0).toUpperCase();return `<div class="movie-poster" style="background:linear-gradient(145deg,${p[0]},${p[1]})"><span class="type-pill">${escapeHtml(categoryOf(m).toUpperCase())}</span><span class="year-pill">${escapeHtml(m.year||"NEW")}</span><span class="poster-letter">${escapeHtml(letter)}</span></div>`}
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function render(){
