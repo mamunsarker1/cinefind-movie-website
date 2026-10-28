@@ -1,16 +1,14 @@
-
 import json
 import os
 import re
 from html.parser import HTMLParser
-from urllib.request import Request, urlopen
 from urllib.parse import urljoin, urlparse
+from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 
 SOURCE_URL = "https://southfreak.club/"
 OUTPUT = "data/movies.json"
 
-# সাধারণ ওয়েবসাইটের পেজ বাদ দেওয়ার তালিকা
 EXCLUDE = {
     "about", "about-us", "contact", "contact-us",
     "disclaimer", "dmca", "privacy-policy", "terms",
@@ -45,7 +43,7 @@ def main():
     )
 
     with urlopen(request, timeout=30) as response:
-        html = response.read(4_000_000).decode("utf-8", "replace")
+        html = response.read(3_000_000).decode("utf-8", "replace")
 
     parser = LinkParser()
     parser.feed(html)
@@ -58,17 +56,15 @@ def main():
         title = re.sub(r"\s+", " ", item["text"]).strip()
         link = urljoin(SOURCE_URL, item["href"])
         parsed = urlparse(link)
-        path_parts = [p.lower() for p in parsed.path.strip("/").split("/") if p]
+        slug = parsed.path.strip("/").split("/")[-1].lower()
 
+        if parsed.scheme not in ("http", "https"):
+            continue
         if parsed.netloc != source_host:
             continue
-        if len(title) < 3 or len(title) > 160:
+        if not title or len(title) < 3 or len(title) > 160:
             continue
-        if link.rstrip("/") == SOURCE_URL.rstrip("/"):
-            continue
-        if any(part in EXCLUDE for part in path_parts):
-            continue
-        if parsed.path.rstrip("/") in ("", "/"):
+        if slug in EXCLUDE or not parsed.path.strip("/"):
             continue
         if link in seen:
             continue
@@ -85,17 +81,18 @@ def main():
 
     if not movies:
         raise RuntimeError(
-            "No eligible links found. Keeping existing movie data."
+            "No listings found. Existing movie data was not changed."
         )
 
     os.makedirs("data", exist_ok=True)
-    with open(OUTPUT, "w", encoding="utf-8") as f:
+
+    with open(OUTPUT, "w", encoding="utf-8") as file:
         json.dump({
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "movies": movies[:250]
-        }, f, ensure_ascii=False, indent=2)
+        }, file, ensure_ascii=False, indent=2)
 
-    print(f"Saved {min(len(movies), 250)} candidate links.")
+    print(f"Updated {min(len(movies), 250)} source links.")
 
 if __name__ == "__main__":
     main()
