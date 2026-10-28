@@ -29,8 +29,23 @@ function categoryOf(m) {
 
   return "Other";
 }
-function posterMarkup(m,i){const p=palette[i%palette.length];const letter=(m.title||"?").trim().charAt(0).toUpperCase();return `<div class="movie-poster" style="background:linear-gradient(145deg,${p[0]},${p[1]})"><span class="type-pill">${escapeHtml(categoryOf(m).toUpperCase())}</span><span class="year-pill">${escapeHtml(m.year||"NEW")}</span><span class="poster-letter">${escapeHtml(letter)}</span></div>`}
-function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function posterMarkup(m,i){
+  const p=palette[i%palette.length];
+  const letter=(m.title||"?").trim().charAt(0).toUpperCase();
+  const poster=m.poster_url||m.poster||m.image||m.thumbnail||"";
+  const safePoster=safeUrl(poster);
+  const background=safePoster
+    ? `background-image:url("${safePoster}");background-size:cover;background-position:center;`
+    : `background:linear-gradient(145deg,${p[0]},${p[1]});`;
+
+  return `<div class="movie-poster" style="${background}">
+    <span class="type-pill">${escapeHtml(categoryOf(m).toUpperCase())}</span>
+    <span class="year-pill">${escapeHtml(m.year||"NEW")}</span>
+    ${safePoster ? "" : `<span class="poster-letter">${escapeHtml(letter)}</span>`}
+  </div>`;
+}
+
 function render(){
  const q=search.value.trim().toLowerCase();let list=movies.filter(m=>(cat.value==="all"||categoryOf(m).toLowerCase()===cat.value.toLowerCase())&&(`${m.title||""} ${m.category||""} ${m.year||""} ${m.description||""}`).toLowerCase().includes(q));
  if(sort.value==="az")list.sort((a,b)=>(a.title||"").localeCompare(b.title||""));
