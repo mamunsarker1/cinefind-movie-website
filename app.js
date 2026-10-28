@@ -30,7 +30,15 @@ function categoryOf(m) {
   return "Other";
 }
 
-function posterMarkup(m,i){
+function escapeHtml(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}function posterMarkup(m,i){
   const p=palette[i%palette.length];
   const letter=(m.title||"?").trim().charAt(0).toUpperCase();
   const poster=m.poster_url||m.poster||m.image||m.thumbnail||"";
