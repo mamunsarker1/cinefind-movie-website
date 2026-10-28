@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Discover the latest movie listings, dramas, and web series. Click through to the original publisher to watch or download where available.">
+  <meta name="theme-color" content="#090d18">
+  <title>CineFind — Latest Movie Listings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="CineFind home"><span class="brand-mark">▶</span><span>CINE<span>FIND</span></span></a>
+    <nav><a href="#latest">Latest</a><a href="#categories">Categories</a><a href="#about">About</a></nav>
+    <a class="submit-link" href="#latest">Explore movies <span>↗</span></a>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-dot"></span> YOUR MOVIE DISCOVERY HUB</p>
+        <h1>Find your next<br><span>movie night.</span></h1>
+        <p class="hero-desc">Browse new movie listings, dramas and series in one place. Select a title to visit its original website.</p>
+        <div class="hero-actions"><a class="primary-btn" href="#latest">Browse latest <span>→</span></a><a class="secondary-btn" href="#categories">Explore categories</a></div>
+        <div class="hero-note"><span>✦</span> Fresh listings can sync automatically when the source feed is available.</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="poster poster-back"><span>SCI-FI</span><b>BEYOND<br>THE SKY</b></div>
+        <div class="poster poster-front"><span>FEATURED</span><div class="poster-sun"></div><b>THE LAST<br>SIGNAL</b><small>A STORY BEYOND TIME</small></div>
+        <div class="floating-tag tag-top">NEW RELEASES <span>✦</span></div><div class="floating-tag tag-bottom">DISCOVER MORE ↗</div>
+      </div>
+    </section>
+    <section class="stats">
+      <div><strong id="total-count">—</strong><span>LISTINGS</span></div><div><strong id="updated-date">Loading</strong><span>LAST UPDATED</span></div><div><strong>Free</strong><span>TO BROWSE</span></div>
+    </section>
+    <section class="content-section" id="latest">
+      <div class="section-heading"><div><p class="eyebrow">HAND-PICKED DISCOVERY</p><h2>Latest listings</h2></div><span class="section-side">Click a card to open its source ↗</span></div>
+      <div class="toolbar"><label class="searchbox"><span>⌕</span><input id="search" type="search" placeholder="Search movies, dramas, series..." aria-label="Search listings"></label><select id="category-filter" aria-label="Filter by category"><option value="all">All categories</option></select><select id="sort-filter" aria-label="Sort listings"><option value="newest">Newest first</option><option value="az">Title A–Z</option></select></div>
+      <div id="status" class="status">Loading listings…</div>
+      <div id="movie-grid" class="movie-grid"></div>
+      <div id="empty-state" class="empty-state" hidden><div>⌕</div><h3>No listings found</h3><p>Try another search or category.</p></div>
+      <div class="load-more-wrap"><button id="load-more" class="secondary-btn" hidden>Show more ↓</button></div>
+    </section>
+    <section class="category-section" id="categories">
+      <div class="section-heading"><div><p class="eyebrow">BROWSE YOUR WAY</p><h2>Explore categories</h2></div></div>
+      <div class="category-grid">
+        <button data-cat="Hollywood"><span>🎬</span><b>Hollywood</b><small>English-language</small></button>
+        <button data-cat="Bollywood"><span>🎞️</span><b>Bollywood</b><small>Hindi cinema</small></button>
+        <button data-cat="South Indian"><span>🔥</span><b>South Indian</b><small>Tamil · Telugu · more</small></button>
+        <button data-cat="Bengali"><span>🌙</span><b>Bengali</b><small>Movies & telefilms</small></button>
+        <button data-cat="Web Series"><span>📺</span><b>Web Series</b><small>Series & seasons</small></button>
+        <button data-cat="Drama"><span>🎭</span><b>Drama</b><small>Natok & telefilm</small></button>
+        <button data-cat="Korean"><span>🌸</span><b>Korean</b><small>K-drama & movies</small></button>
+        <button data-cat="Other"><span>🌍</span><b>More countries</b><small>International picks</small></button>
+      </div>
+    </section>
+    <section class="about-section" id="about"><div><p class="eyebrow">HOW IT WORKS</p><h2>Discover here.<br><span>Visit the source.</span></h2></div><p>CineFind is a movie-discovery directory. It displays titles and links to original publisher pages; video files are not hosted here. Availability and viewing options depend on the source website. Use only links and metadata you are permitted to publish.</p></section>
+  </main>
+  <footer><a class="brand" href="./"><span class="brand-mark">▶</span><span>CINE<span>FIND</span></span></a><p>Movie discovery, made simple.</p><span class="footer-small">© <span id="year"></span> CineFind · Independent listing directory</span></footer>
+  <script src="app.js"></script>
+</body>
+</html>
